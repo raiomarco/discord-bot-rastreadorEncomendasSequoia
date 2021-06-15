@@ -1,0 +1,31 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Sistema {
+  key   String @id
+  value String
+}
+
+model Usuario {
+  id         String      @id
+  cpf        String?
+  encomendas Encomenda[]
+}
+
+enum Status {
+  Ativo
+  Finalizado
+}
+
+model Encomenda {
+  id        String  @id
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId String
+  status    Status  @default(Ativo)
+}
